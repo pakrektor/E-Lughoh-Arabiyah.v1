@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal - E-Lughoh Arabiyah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="antialiased">
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg p-4 rounded-b-xl">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-bold mb-4 md:mb-0"><a href="/" class="hover:text-blue-200 transition duration-300">E-Lughoh Arabiyah</a></h1>
+            <nav>
+                 <ul class="flex flex-wrap justify-center space-x-4 md:space-x-6">
+                    <li><a href="/pengertian.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Pengertian</a></li>
+                    <li><a href="/kalimat.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Kalimat</a></li>
+                    <li><a href="/isim.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Isim</a></li>
+                    <li><a href="/fiil.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Fi'il</a></li>
+                    <li><a href="/huruf.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Huruf</a></li>
+                    <li><a href="/latihan.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Latihan Soal</a></li>
+                    <li><a href="/tentang.html" class="text-lg hover:text-blue-200 p-2 rounded-lg hover:bg-blue-700">Tentang</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 space-y-12">
+        <section id="latihan-soal" class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-4xl font-extrabold text-blue-800 mb-6 border-b-4 border-blue-600 pb-2">Latihan Soal Nahwu</h2>
+            <div class="mb-6 flex flex-col md:flex-row md:items-center md:space-x-4">
+                <label for="user-name" class="block text-gray-700 text-sm font-bold mb-2 md:mb-0">Nama Anda:</label>
+                <input type="text" id="user-name" placeholder="Masukkan nama Anda" class="shadow appearance-none border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500 w-full md:w-64">
+            </div>
+            <div id="quiz-container" class="space-y-6">
+                </div>
+            <div class="mt-8 flex flex-col items-center space-y-4">
+                <button id="check-answers-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto">Cek Jawaban</button>
+                
+                <button id="retake-quiz-btn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 hidden w-full md:w-auto">Ulangi Kuis</button>
+                
+            </div>
+            <div id="quiz-results" class="mt-8 p-6 bg-blue-50 text-blue-800 rounded-xl shadow-inner text-center font-semibold text-xl hidden">
+                <p id="score-text"></p>
+                </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white p-6 rounded-t-xl mt-12 shadow-inner">
+        <div class="container mx-auto text-center">
+            <p class="text-sm">&copy; 2025 E-Lughoh Arabiyah</p>
+            <p class="text-xs mt-2">Dibuat dengan semangat belajar oleh empat Mahasiswa.</p>
+        </div>
+    </footer>
+    
+    <div id="custom-alert" class="custom-alert hidden"></div>
+    <div id="timer" class="fixed top-4 right-4 bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg text-lg font-bold z-50 hidden"></div>
+
+    <!-- Modal Pilihan Timer -->
+    <div id="timer-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center">
+            <h3 class="text-2xl font-bold mb-4 text-blue-700">Yakin Ingin melanjutkan?</h3>
+            <p class="mb-6 text-gray-700">Latihan soal ini hanya dapat dikerjakan dengan batas waktu 10 menit.<br>Apakah Anda ingin melanjutkan?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="timer-yes" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">Ya, mulai</button>
+                <button id="timer-no" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg">Tidak, keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/soal.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('user-name');
+    const checkBtn = document.getElementById('check-answers-btn');
+    const retakeBtn = document.getElementById('retake-quiz-btn');
+    const timerDiv = document.getElementById('timer');
+    const timerModal = document.getElementById('timer-modal');
+    const timerYes = document.getElementById('timer-yes');
+    const timerNo = document.getElementById('timer-no');
+    let timerInterval, timeLeft = 600; // 10 menit
+    let timerEnabled = false;
+
+    // Modal tampil saat halaman load
+    timerModal.classList.remove('hidden');
+
+    // Disable tombol sebelum nama diisi
+    checkBtn.disabled = true;
+    checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+    nameInput.addEventListener('input', function() {
+        if (nameInput.value.trim() !== "") {
+            checkBtn.disabled = false;
+            checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        } else {
+            checkBtn.disabled = true;
+            checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    });
+
+    function startTimer() {
+        timeLeft = 600;
+        timerDiv.classList.remove('hidden');
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerDiv.textContent = "Waktu Habis!";
+                checkBtn.click();
+                checkBtn.disabled = true;
+                checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+        const sec = String(timeLeft % 60).padStart(2, '0');
+        timerDiv.textContent = `Sisa Waktu: ${min}:${sec}`;
+    }
+
+    // Pilihan modal
+    timerYes.addEventListener('click', function() {
+        timerEnabled = true;
+        timerModal.classList.add('hidden');
+        startTimer();
+    });
+    timerNo.addEventListener('click', function() {
+        // Redirect keluar dari latihan soal, misal ke halaman utama
+        window.location.href = '/';
+    });
+
+    // Reset timer saat ulangi kuis
+    retakeBtn.addEventListener('click', function() {
+        clearInterval(timerInterval);
+        if (timerEnabled) {
+            startTimer();
+        } else {
+            timerDiv.classList.add('hidden');
+        }
+    });
+
+    // Stop timer saat submit
+    checkBtn.addEventListener('click', function() {
+        clearInterval(timerInterval);
+    });
+});
+
+
+// Contoh pemanggilan:
+// simpanHasilLatihan('Ahmad', 120, 8);
+</script>
+</body>
+</html>
