@@ -1,6 +1,6 @@
 // js/homepage.js
 
-// Ganti dengan URL Web App DARI DEPLOYMENT Google Apps Script ANDA
+// Ganti dengan URL Web App dari DEPLOYMENT Google Apps Script ANDA
 const SPREADSHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbxrRx1qsy35q7OoRLqAmeg-vCuVJpJ0PxQiW3F4Qz7jP3dvTmeZQRCtoHsjGbyvy7wW5A/exec";
 
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                               <tbody>
                                   ${hasilTerbaru
                                     .map((item) => {
-                                      // --- LOGIKA BARU UNTUK FORMAT TANGGAL ---
+                                      // --- LOGIKA UNTUK FORMAT TANGGAL ---
                                       const submissionDate = new Date(
                                         item.waktu
                                       );
@@ -60,28 +60,34 @@ document.addEventListener("DOMContentLoaded", () => {
                                           }
                                         );
 
-                                      // --- LOGIKA BARU UNTUK KONVERSI WAKTU PENGERJAAN ---
+                                      // --- LOGIKA BARU YANG LEBIH ROBUST UNTUK KONVERSI WAKTU ---
                                       let displayTime;
-                                      // Periksa apakah data waktu adalah angka (data lama dalam detik)
+                                      const waktu = item.waktuPengerjaan;
+
+                                      // Cek apakah data waktu tidak mengandung ':'
+                                      // Jika tidak, maka itu adalah data lama (total detik) yang perlu dikonversi.
                                       if (
-                                        !isNaN(item.waktuPengerjaan) &&
-                                        typeof item.waktuPengerjaan === "number"
+                                        String(waktu).indexOf(":") === -1 &&
+                                        !isNaN(waktu)
                                       ) {
-                                        const minutes = Math.floor(
-                                          item.waktuPengerjaan / 60
+                                        const totalSeconds = parseInt(
+                                          waktu,
+                                          10
                                         );
-                                        const seconds =
-                                          item.waktuPengerjaan % 60;
+                                        const minutes = Math.floor(
+                                          totalSeconds / 60
+                                        );
+                                        const seconds = totalSeconds % 60;
                                         displayTime = `${String(
                                           minutes
                                         ).padStart(2, "0")}:${String(
                                           seconds
                                         ).padStart(2, "0")}`;
                                       } else {
-                                        // Jika bukan angka, berarti sudah dalam format MM:SS (data baru)
-                                        displayTime = item.waktuPengerjaan;
+                                        // Jika sudah mengandung ':', berarti sudah dalam format MM:SS
+                                        displayTime = waktu;
                                       }
-                                      // -------------------------------------------------
+                                      // ---------------------------------------------------------
 
                                       return `
                                         <tr class="hover:bg-gray-50">
