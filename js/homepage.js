@@ -2,7 +2,7 @@
 
 // Ganti dengan URL Web App DARI DEPLOYMENT Google Apps Script ANDA
 const SPREADSHEET_API_URL =
-  "https://script.google.com/macros/s/AKfycbzy9XpILVWqQ2TkLXnC7x8-QDI9e4UGiwMJdjUtUH4HnSnj9f0Z7IdkfL6-U-MyTxEWDQ/exec";
+  "https://script.google.com/macros/s/AKfycbzkILaIM9XDCvLko7gxeYYBUgqHy1NaQ5lVNxclbIvWM3jvXQDP081NZ1jhGNitBDpYEA/exec";
 
 // Pastikan skrip berjalan setelah seluruh halaman dimuat
 document.addEventListener("DOMContentLoaded", () => {
