@@ -40,13 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Tanggal</th>
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Nama</th>
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Skor</th>
-                                      <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Waktu Pengerjaan</th>
+                                      <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Waktu (detik)</th>
                                   </tr>
                               </thead>
                               <tbody>
                                   ${hasilTerbaru
                                     .map((item) => {
-                                      // --- LOGIKA UNTUK FORMAT TANGGAL ---
+                                      // --- LOGIKA FORMAT TANGGAL ---
                                       const submissionDate = new Date(
                                         item.waktu
                                       );
@@ -60,34 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                           }
                                         );
 
-                                      // --- LOGIKA BARU YANG LEBIH ROBUST UNTUK KONVERSI WAKTU ---
-                                      let displayTime;
-                                      const waktu = item.waktuPengerjaan;
-
-                                      // Cek apakah data waktu tidak mengandung ':'
-                                      // Jika tidak, maka itu adalah data lama (total detik) yang perlu dikonversi.
-                                      if (
-                                        String(waktu).indexOf(":") === -1 &&
-                                        !isNaN(waktu)
-                                      ) {
-                                        const totalSeconds = parseInt(
-                                          waktu,
-                                          10
-                                        );
-                                        const minutes = Math.floor(
-                                          totalSeconds / 60
-                                        );
-                                        const seconds = totalSeconds % 60;
-                                        displayTime = `${String(
-                                          minutes
-                                        ).padStart(2, "0")}:${String(
-                                          seconds
-                                        ).padStart(2, "0")}`;
-                                      } else {
-                                        // Jika sudah mengandung ':', berarti sudah dalam format MM:SS
-                                        displayTime = waktu;
-                                      }
-                                      // ---------------------------------------------------------
+                                      // --- LOGIKA WAKTU DISEDERHANAKAN ---
+                                      // Langsung menampilkan data waktu pengerjaan apa adanya.
+                                      const displayTime = item.waktuPengerjaan;
+                                      // ---------------------------------
 
                                       return `
                                         <tr class="hover:bg-gray-50">
@@ -101,7 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                                 : "-"
                                             }</td>
                                             <td class="px-4 py-2 border-b border-gray-200">${
-                                              displayTime || "N/A"
+                                              displayTime !== undefined
+                                                ? displayTime
+                                                : "N/A"
                                             }</td>
                                         </tr>
                                       `;
