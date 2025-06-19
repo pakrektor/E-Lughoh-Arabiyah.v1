@@ -1,6 +1,6 @@
 // Ganti dengan URL Web App dari DEPLOYMENT Google Apps Script ANDA
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxrRx1qsy35q7OoRLqAmeg-vCuVJpJ0PxQiW3F4Qz7jP3dvTmeZQRCtoHsjGbyvy7wW5A/exec";
+  "https://script.google.com/macros/s/AKfycbxyLlCnurQKJgA9yGNT5jd2Yw7HUZBFvISwqETP2dohEZqp-Fd9kO00LFA0unMSq5XZLw/exec";
 
 // Fungsi notifikasi
 function showAlert(message, isSuccess = true) {

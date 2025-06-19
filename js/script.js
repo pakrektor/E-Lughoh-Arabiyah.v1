@@ -1,6 +1,6 @@
 // Ganti dengan URL Web App dari DEPLOYMENT Google Apps Script ANDA
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzkILaIM9XDCvLko7gxeYYBUgqHy1NaQ5lVNxclbIvWM3jvXQDP081NZ1jhGNitBDpYEA/exec";
+  "https://script.google.com/macros/s/AKfycbxyLlCnurQKJgA9yGNT5jd2Yw7HUZBFvISwqETP2dohEZqp-Fd9kO00LFA0unMSq5XZLw/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const quizSection = document.getElementById("latihan-soal");
