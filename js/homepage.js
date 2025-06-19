@@ -2,7 +2,7 @@
 
 // Ganti dengan URL Web App DARI DEPLOYMENT Google Apps Script ANDA
 const SPREADSHEET_API_URL =
-  "https://script.google.com/macros/s/AKfycbxyLlCnurQKJgA9yGNT5jd2Yw7HUZBFvISwqETP2dohEZqp-Fd9kO00LFA0unMSq5XZLw/exec";
+  "https://script.google.com/macros/s/AKfycbxrRx1qsy35q7OoRLqAmeg-vCuVJpJ0PxQiW3F4Qz7jP3dvTmeZQRCtoHsjGbyvy7wW5A/exec";
 
 // Pastikan skrip berjalan setelah seluruh halaman dimuat
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,12 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (data.length > 0) {
-        // Urutkan data berdasarkan timestamp (waktu) terbaru, lalu ambil 5 teratas
+        // Urutkan data berdasarkan timestamp (waktu) terbaru, lalu ambil 10 teratas
         const hasilTerbaru = data
           .sort((a, b) => new Date(b.waktu) - new Date(a.waktu))
           .slice(0, 10);
 
-        // Buat struktur tabel HTML dengan kolom baru
+        // Buat struktur tabel HTML
         let tableHTML = `
                       <div class="overflow-x-auto">
                           <table class="min-w-full text-sm text-left border-collapse">
@@ -59,14 +59,44 @@ document.addEventListener("DOMContentLoaded", () => {
                                             year: "numeric",
                                           }
                                         );
-                                      // ------------------------------------
+
+                                      // --- LOGIKA BARU UNTUK KONVERSI WAKTU PENGERJAAN ---
+                                      let displayTime;
+                                      // Periksa apakah data waktu adalah angka (data lama dalam detik)
+                                      if (
+                                        !isNaN(item.waktuPengerjaan) &&
+                                        typeof item.waktuPengerjaan === "number"
+                                      ) {
+                                        const minutes = Math.floor(
+                                          item.waktuPengerjaan / 60
+                                        );
+                                        const seconds =
+                                          item.waktuPengerjaan % 60;
+                                        displayTime = `${String(
+                                          minutes
+                                        ).padStart(2, "0")}:${String(
+                                          seconds
+                                        ).padStart(2, "0")}`;
+                                      } else {
+                                        // Jika bukan angka, berarti sudah dalam format MM:SS (data baru)
+                                        displayTime = item.waktuPengerjaan;
+                                      }
+                                      // -------------------------------------------------
 
                                       return `
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-4 py-2 border-b border-gray-200 whitespace-nowrap">${formattedDate}</td>
-                                            <td class="px-4 py-2 border-b border-gray-200">${item.nama}</td>
-                                            <td class="px-4 py-2 border-b border-gray-200">${item.score} / ${item.total}</td>
-                                            <td class="px-4 py-2 border-b border-gray-200">${item.waktuPengerjaan}</td>
+                                            <td class="px-4 py-2 border-b border-gray-200">${
+                                              item.nama || "-"
+                                            }</td>
+                                            <td class="px-4 py-2 border-b border-gray-200">${
+                                              item.score !== undefined
+                                                ? `${item.score} / ${item.total}`
+                                                : "-"
+                                            }</td>
+                                            <td class="px-4 py-2 border-b border-gray-200">${
+                                              displayTime || "N/A"
+                                            }</td>
                                         </tr>
                                       `;
                                     })
