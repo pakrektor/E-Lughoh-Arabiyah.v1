@@ -52,7 +52,7 @@ function initializeQuiz() {
   }
 
   function startTimer() {
-    timeLeft = 300; // 10 menit
+    timeLeft = 600; // 10 menit
     timerDiv.classList.remove("hidden");
     updateTimerDisplay();
     timerInterval = setInterval(() => {
