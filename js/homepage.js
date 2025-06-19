@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Tanggal</th>
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Nama</th>
                                       <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Skor</th>
-                                      <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Waktu Pengerjaan</th>
+                                      <th class="px-4 py-2 border-b-2 border-blue-200 font-semibold text-blue-800">Waktu Pengerjaan (Detik)</th>
                                   </tr>
                               </thead>
                               <tbody>
